@@ -44,6 +44,12 @@ def generate_cc_impl(ctx):
     additional_input = []
   # Import protos relative to the workspace root so that protoc prints the right
   # include paths.
+  for include in includes:
+#    directory = include.path.dirname
+    print(include.workspace_root)
+  arguments += ["-I{0}={0}".format(include.path) for include in includes if path.readdir()[0] == "external"]
+  # Import protos relative to the workspace root so that protoc prints the right
+  # include paths.
   arguments += ["--proto_path=" + (ctx.label.workspace_root or ".")]
   # A second include so that protoc puts the generated code in the right directory.
   arguments += ["--proto_path={0}{1}".format(dir_out, proto_root)]
